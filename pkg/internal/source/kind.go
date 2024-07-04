@@ -30,6 +30,11 @@ type Kind struct {
 	startCancel func()
 }
 
+// ObjectType is the type of object to watch.  e.g. &v1.Pod{}
+func (ks *Kind) ObjectType() client.Object {
+	return ks.Type
+}
+
 // Start is internal and should be called only by the Controller to register an EventHandler with the Informer
 // to enqueue reconcile.Requests.
 func (ks *Kind) Start(ctx context.Context, handler handler.EventHandler, queue workqueue.RateLimitingInterface,

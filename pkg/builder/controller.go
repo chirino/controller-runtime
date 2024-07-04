@@ -38,7 +38,7 @@ import (
 )
 
 // Supporting mocking out functions for testing.
-var newController = controller.New
+var NewController = controller.New
 var getGvk = apiutil.GVKForObject
 
 // project represents other forms that we can use to
@@ -408,6 +408,6 @@ func (blder *Builder) doController(r reconcile.Reconciler) error {
 	}
 
 	// Build the controller and return.
-	blder.ctrl, err = newController(controllerName, blder.mgr, ctrlOptions)
+	blder.ctrl, err = NewController(controllerName, blder.mgr, ctrlOptions)
 	return err
 }

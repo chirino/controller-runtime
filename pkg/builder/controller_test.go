@@ -77,7 +77,7 @@ func (l *testLogger) WithName(name string) logr.LogSink {
 
 var _ = Describe("application", func() {
 	BeforeEach(func() {
-		newController = controller.New
+		NewController = controller.New
 	})
 
 	noop := reconcile.Func(func(context.Context, reconcile.Request) (reconcile.Result, error) {
@@ -182,7 +182,7 @@ var _ = Describe("application", func() {
 		})
 
 		It("should return an error if it cannot create the controller", func() {
-			newController = func(name string, mgr manager.Manager, options controller.Options) (
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (
 				controller.Controller, error) {
 				return nil, fmt.Errorf("expected error")
 			}
@@ -202,7 +202,7 @@ var _ = Describe("application", func() {
 
 		It("should override max concurrent reconcilers during creation of controller", func() {
 			const maxConcurrentReconciles = 5
-			newController = func(name string, mgr manager.Manager, options controller.Options) (
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (
 				controller.Controller, error) {
 				if options.MaxConcurrentReconciles == maxConcurrentReconciles {
 					return controller.New(name, mgr, options)
@@ -225,7 +225,7 @@ var _ = Describe("application", func() {
 
 		It("should override max concurrent reconcilers during creation of controller, when using", func() {
 			const maxConcurrentReconciles = 10
-			newController = func(name string, mgr manager.Manager, options controller.Options) (
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (
 				controller.Controller, error) {
 				if options.MaxConcurrentReconciles == maxConcurrentReconciles {
 					return controller.New(name, mgr, options)
@@ -253,7 +253,7 @@ var _ = Describe("application", func() {
 
 		It("should override rate limiter during creation of controller", func() {
 			rateLimiter := workqueue.DefaultItemBasedRateLimiter()
-			newController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
 				if options.RateLimiter == rateLimiter {
 					return controller.New(name, mgr, options)
 				}
@@ -276,7 +276,7 @@ var _ = Describe("application", func() {
 		It("should override logger during creation of controller", func() {
 
 			logger := &testLogger{}
-			newController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
 				if options.LogConstructor(nil).GetSink() == logger {
 					return controller.New(name, mgr, options)
 				}
@@ -299,7 +299,7 @@ var _ = Describe("application", func() {
 		})
 
 		It("should not allow multiple reconcilers during creation of controller", func() {
-			newController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
+			NewController = func(name string, mgr manager.Manager, options controller.Options) (controller.Controller, error) {
 				if options.Reconciler != (typedNoop{}) {
 					return nil, fmt.Errorf("Custom reconciler expected %T but found %T", typedNoop{}, options.Reconciler)
 				}

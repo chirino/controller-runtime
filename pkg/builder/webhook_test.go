@@ -62,7 +62,7 @@ func runTests(admissionReviewVersion string) {
 
 	BeforeEach(func() {
 		stop = make(chan struct{})
-		newController = controller.New
+		NewController = controller.New
 		logBuffer = gbytes.NewBuffer()
 		testingLogger = zap.New(zap.JSONEncoder(), zap.WriteTo(io.MultiWriter(logBuffer, GinkgoWriter)))
 	})
